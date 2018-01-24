@@ -28,11 +28,10 @@ for i in /*; do echo $i; find $i | wc -l; done
 for i in /var/spool/postfix/*; do echo $i; find $i | wc -l; done
 发现绝大部分文件在/var/spool/postfix/maildrop目录下面，然后再上网百度这个目录是干什么的，得到如下结果：
 由于linux在执行cron时，会将cron执行脚本中的output和warning信息，都会以邮件的形式发送cron所有者， 而我的服务器中关闭了postfix，导致邮件发送不成功，全部小文件堆积在了maildrop目录下面。如果sendmail或者postfix正常运行，则会在/var/mail目录下也会堆积大量的邮件。
-
      解决方法：
-
      修改“/etc/crontab”
-
      将‘MAILTO=root’替换成‘MAILTO=""’修改之后没有成功，需要重启crond服务才可以
-
      也可从在crontab（crontab -e）中最前面直接加入MAILTO=""
+我才用的是第二种方案，解决的。但是那一百多万的邮件怎么删除呢，用如下办法：
+ls | xargs -n 10 rm -rf
+直到删除干净。
